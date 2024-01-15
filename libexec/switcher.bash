@@ -21,6 +21,7 @@ handle_tmux_opts() {
 	bind_delete_char=$(get_tmux_option "@tmuxinoicer-delete-char" "bspace")
 	bind_rename=$(get_tmux_option '@tmuxinoicer-rename' "ctrl-r")
 
+	color=$(get_tmux_option "@tmuxinoicer-color" "pointer:9,spinner:92,marker:46,fg+:11")
 	window_height=$(get_tmux_option "@tmuxinoicer-window-height" "75%")
 	window_width=$(get_tmux_option "@tmuxinoicer-window-width" "90%")
 	default_window_mode=$(get_tmux_option "@tmuxinoicer-default-window-mode" "off")
@@ -75,9 +76,9 @@ get_find_list() {
 
 get_sessions_list() {
 	if [ "$1" = "windows" ]; then
-		tmux list-windows -aF '#S:#I #{session_last_attached} ' | sort --numeric-sort --reverse | awk '{print $1}' | grep -v "$(tmux list-windows -F '#S:#I')" || tmux list-windows -F '#S:#I'
+		tmux list-windows -F '#{session_last_attached}, #S:#I' | sort --numeric-sort --reverse | awk -F', ' '{print $2}' | grep -v "$(tmux list-windows -F '#S:#I')" || tmux list-windows -F '#S:#I'
 	elif [ "$1" = "sessions" ]; then
-		tmux list-sessions -F '#S #{session_last_attached}' | sort --numeric-sort --reverse | awk '{print $1}' | grep -v "$(tmux display-message -p '#S')" || tmux display-message -p '#S'
+		tmux list-sessions -F '#{session_last_attached}, #S' | sort --numeric-sort --reverse | awk -F', ' '{print $2}' | grep -v "$(tmux display-message -p '#S')" || tmux display-message -p '#S'
 	fi
 }
 
@@ -125,9 +126,10 @@ menu() {
 				fi
 			done
 		fi
-		get_sessions_list "$1" && printf '\e[1;34m%-6s\e[m\n' "${result[@]}"
+		# get_sessions_list "$1" && printf '\e[1;34m%-6s\e[m\n' "${result[@]}"
+		printf '\e[1;33m%-6s\e[m\n' "$(get_sessions_list "$1")" && printf '%-6s\n' "${result[@]}"
 	else
-		get_sessions_list "$1"
+		printf '\e[1;33m%-6s\e[m\n' "$(get_sessions_list "$1")"
 	fi
 }
 
@@ -210,10 +212,10 @@ run_fzf() {
 			--bind "$rename_session" \
 			--bind '?:toggle-preview' \
 			--bind 'change:first' \
-			--color 'pointer:9,spinner:92,marker:46' \
 			--exit-0 \
 			--no-sort \
 			--header="$header" \
+			--color "$color" \
 			--preview="$preview_default" \
 			--preview-window="${preview_location},${preview_ratio},," \
 			--pointer='▶' \
