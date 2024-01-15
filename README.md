@@ -2,6 +2,8 @@
 
 A combination of `noice` things to have in a tmux session manager.
 
+![image](./tmuxinoicer.png)
+
 ## ✨ Features
 
 - Integrations with fzf for fuzzy search
@@ -73,7 +75,7 @@ You can now then reference `pkgs.tmuxPlugins.tmuxinoicer` inside
 | `@tmuxinoicer-window-width`        | `"90%"`               | Fzf-tmux display width.                                                                      |
 | `@tmuxinoicer-default-window-mode` | `"off"`               | Sets window-mode as the default list for input.                                              |
 | `@tmuxinoicer-preview-location`    | `"right"`             | Fzf-tmux preview location.                                                                   |
-| `@tmuxinoicer-preview-ratio`       | `"50%"`               | Fzf-tmux preview ratio.                                                                      |
+| `@tmuxinoicer-preview-ratio`       | `"60%"`               | Fzf-tmux preview ratio.                                                                      |
 | `@tmuxinoicer-extras`              | `"find,zoxide"`       | Adds both find and zoxide results to the list for input display.                             |
 | `@tmuxinoicer-find-base`           | `"$HOME/.config:1:2"` | A comma-separated list of directories and their depths to find directories based on rooters. |
 | `@tmuxinoicer-find-rooters`        | `".git"`              | A comma-separated list of rooters.                                                           |
