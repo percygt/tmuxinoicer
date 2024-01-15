@@ -18,6 +18,7 @@ to_session_name() {
 	# If the path starts with a slash (a dot), remove it
 	# e.g. .emacs.d -> _emacs_d -> emacs_d
 	session_name=${session_name#_}
-
+	# trim spaces
+	session_name=${session_name// /}
 	echo "$session_name"
 }
