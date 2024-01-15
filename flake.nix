@@ -1,5 +1,5 @@
 {
-  description = "Tmuxinoicer: Adding noice things to tmux.";
+  description = "A combination of `noice` things to have in a tmux session manager.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -15,16 +15,17 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
         tmuxinoicer = pkgs.callPackage ./packages/default.nix {};
-      in {
-        packages.default = tmuxinoicer;
-        overlay = self.overlays.default;
-        overlays.default = self: super: {
+        overlays = final: prev: {
           tmuxPlugins =
-            super.tmuxPlugins
+            prev.tmuxPlugins
             // {
               inherit tmuxinoicer;
             };
         };
+      in {
+        packages.default = tmuxinoicer;
+
+        overlays.default = overlays;
 
         devShells.default = let
           tmux_conf = pkgs.writeText "tmux.conf" ''
@@ -33,7 +34,6 @@
             set-option -g default-terminal 'screen-254color'
             set-option -g terminal-overrides ',xterm-256color:RGB'
             set -g default-terminal "''${TERM}"
-            display-message ${tmuxinoicer.rtp}
           '';
         in
           pkgs.mkShell {
