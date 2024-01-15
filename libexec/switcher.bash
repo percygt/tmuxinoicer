@@ -27,7 +27,7 @@ handle_tmux_opts() {
 	preview_location=$(get_tmux_option "@tmuxinoicer-preview-location" "right")
 	preview_ratio=$(get_tmux_option "@tmuxinoicer-preview-ratio" "50%")
 
-	find_base_dir=$(get_tmux_option '@tmuxinoicer-base-dirs' "$HOME/.config")
+	find_base_dir=$(get_tmux_option '@tmuxinoicer-base-dirs' "$HOME/.config:1")
 	find_rooters=$(get_tmux_option '@tmuxinoicer-rooters' '.git')
 	zoxide_excludes=$(get_tmux_option "@tmuxinoicer-zoxide-excludes" ".git,/nix")
 	add_list_opt=$(get_tmux_option "@tmuxinoicer-add-option" "find,zoxide")
@@ -83,21 +83,22 @@ get_sessions_list() {
 
 get_zoxide_list() {
 	excluded_dirs="$(echo "$zoxide_excludes" | tr ',' '\|')"
-	zoxide query -l | sed -e "$HOME_REPLACER" | grep -vE "$excluded_dirs"
+	zoxide query -l | grep -vE "$excluded_dirs"
 }
 
 menu() {
 	local unique_list zoxide_list find_list add_list add_option session_list
 	IFS=',' read -ra add_option <<<"$add_list_opt"
-	find_list=$(get_find_list)
-	zoxide_list=$(get_zoxide_list)
+	find_list=$(get_find_list | sed -e "$HOME_REPLACER")
+	zoxide_list=$(get_zoxide_list | sed -e "$HOME_REPLACER")
 	if [ ${#add_option[@]} -gt 0 ]; then
 		for list_type in "${add_option[@]}"; do
+			[ "$add_list" = "" ] || add_list+=" "
 			if [[ $list_type == "find" ]] && [[ -n "$find_list" ]]; then
-				add_list="$find_list"
+				add_list+="$find_list"
 			fi
 			if [[ $list_type == "zoxide" ]] && [[ -n "$zoxide_list" ]]; then
-				add_list="$add_list $zoxide_list"
+				add_list+="$zoxide_list"
 			fi
 		done
 
@@ -160,7 +161,7 @@ handle_fzf_args() {
 	fi
 	tree_mode="$bind_tree_mode:change-preview($preview_path tree {1})"
 	windows_mode="$bind_window_mode:reload($switcher_path menu windows)+change-preview(${preview_path} window {1})"
-	preview_defailt="${TMUX_PLUGIN_MANAGER_PATH%/}/tmuxinoicer/libexec/preview.bash ${preview_options} {}"
+	preview_default="${TMUX_PLUGIN_MANAGER_PATH%/}/tmuxinoicer/libexec/preview.bash ${preview_options} {}"
 	new_window="$bind_new_window:reload(find $PWD -mindepth 1 -maxdepth 1 -type d)+change-preview($list_cmd {})"
 	back="$bind_back:reload(echo -e \"${input_menu// /}\")+change-preview(${preview_path} session {1})"
 	kill_session="$bind_kill_session:execute(tmux kill-session -t {})+reload(${switcher_path} menu sessions)"
@@ -213,7 +214,7 @@ run_fzf() {
 			--exit-0 \
 			--no-sort \
 			--header="$header" \
-			--preview="$preview_defailt" \
+			--preview="$preview_default" \
 			--preview-window="${preview_location},${preview_ratio},," \
 			--pointer='▶' \
 			-p "$window_width,$window_height" \

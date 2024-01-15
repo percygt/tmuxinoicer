@@ -8,15 +8,19 @@
 #   https://github.com/petobens/dotfiles/blob/master/tmux/tmux_tree
 
 MODE="$1"
-SESSION="$2"
+INPUT="${2// /}"
+
+echo "$HOME" | grep -E "^[a-zA-Z0-9\-_/.@]+$" &>/dev/null
+HOME_SED_SAFE=$?
 
 # Display list of files in directory
 display_directory() {
-	session_name="${1}"
+	local dir="${1}"
+
 	if command -v eza &>/dev/null; then
-		eza --sort type --icons -F -H --group-directories-first -1 "$session_name"
+		eza --sort type --icons -F -H --group-directories-first -1 "$dir"
 	else
-		ls -l "$session_name"
+		ls -l "$dir"
 	fi
 }
 
@@ -60,23 +64,28 @@ tree_mode() {
 
 main() {
 	case "$MODE" in
-	session) session_mode "$SESSION" ;;
-	tree) tree_mode "$SESSION" ;;
-	window) window_mode "$SESSION" ;;
+	session) session_mode "$INPUT" ;;
+	tree) tree_mode "$INPUT" ;;
+	window) window_mode "$INPUT" ;;
 	*) echo "Unknown mode \"$MODE\"" ;;
 	esac
 }
 
-if test "$SESSION" == '*Last*'; then
-	SESSION=$(tmux display-message -p "#{client_last_session}")
-	if test "$SESSION" = ""; then
+if test "$INPUT" == '*Last*'; then
+	INPUT=$(tmux display-message -p "#{client_last_session}")
+	if test "$INPUT" = ""; then
 		echo "No last session."
 		exit 0
 	fi
 fi
 
-if [[ -d "$SESSION" ]]; then
-	display_directory "$SESSION"
+if [[ -d "$INPUT" ]]; then
+	display_directory "$INPUT"
+elif [[ $INPUT == "~/"* ]]; then
+	if [ "$HOME_SED_SAFE" -eq 0 ]; then
+		dir=$(echo "$INPUT" | sed -e "s|^~/|$HOME/|") # get real home path back
+	fi
+	display_directory "$dir"
 else
 	main
 fi

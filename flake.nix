@@ -38,6 +38,7 @@
             set-option -g default-terminal 'screen-254color'
             set-option -g terminal-overrides ',xterm-256color:RGB'
             set -g default-terminal "''${TERM}"
+            display-message ${tmuxinoicer.rtp}
           '';
         in
           pkgs.mkShell {
