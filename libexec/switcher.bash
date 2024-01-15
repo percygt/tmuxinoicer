@@ -103,7 +103,7 @@ menu() {
 		done
 
 		unique_list=$(echo "$add_list" | tr ' ' '\n' | awk '!seen[$0]++' | tr '\n' ',')
-		session_list=$(tmux list-sessions -F '#S' | tr '\n' ',')
+		session_list=$(tmux list-sessions -F '#S' | awk '!seen[$0]++' | tr '\n' ',')
 		IFS=',' read -ra add_list_dir <<<"$unique_list"
 		IFS=',' read -ra session_names <<<"$session_list"
 		result=()
