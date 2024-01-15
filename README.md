@@ -59,7 +59,7 @@ Then, use the flake's `overlay` attribute:
 }
 ```
 
-After that, `tmuxinoicer` can now be used as a normal tmux plugin within
+After that, `tmuxinoicer` can now be used as a normal tmux plugin within the
 `nixpkgs`.
 
 ## ⚙️ Customization
