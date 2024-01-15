@@ -10,22 +10,26 @@
     self,
     flake-utils,
     nixpkgs,
-  }:
-    flake-utils.lib.eachDefaultSystem (
+  }: let
+    overlays = final: prev: let
+      tmuxinoicer = prev.callPackage ./packages/default.nix {};
+    in {
+      tmuxPlugins =
+        prev.tmuxPlugins
+        // {
+          inherit tmuxinoicer;
+        };
+    };
+  in
+    {
+      overlays.default = overlays;
+    }
+    // (flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {inherit system;};
         tmuxinoicer = pkgs.callPackage ./packages/default.nix {};
-        overlays = final: prev: {
-          tmuxPlugins =
-            prev.tmuxPlugins
-            // {
-              inherit tmuxinoicer;
-            };
-        };
       in {
         packages.default = tmuxinoicer;
-
-        overlays.default = overlays;
 
         devShells.default = let
           tmux_conf = pkgs.writeText "tmux.conf" ''
@@ -46,5 +50,5 @@
             '';
           };
       }
-    );
+    ));
 }
