@@ -64,17 +64,18 @@ You can now then reference `pkgs.tmuxPlugins.tmuxinoicer` inside
 | :--------------------------------- | :-------------------- | :------------------------------------------------------------------------------------------- |
 | `@tmuxinoicer-bind`                | `"o"`                 | The key that triggers the plugin.                                                            |
 | `@tmuxinoicer-window-mode`         | `"ctrl-w"`            | Lists windows for every session.                                                             |
-| `@tmuxinoicer-tree-mode`           | `"ctrl-b"`            | Opens the tree preview.                                                                      |
+| `@tmuxinoicer-tree-mode`           | `"ctrl-t"`            | Opens the tree preview.                                                                      |
 | `@tmuxinoicer-new-window`          | `"ctrl-e"`            | Lists directories in the current session                                                     |
 | `@tmuxinoicer-kill-session`        | `"alt-bspace"`        | Kills the session.                                                                           |
 | `@tmuxinoicer-rename`              | `"ctrl-r"`            | Renames either the session or the basename of a directory.                                   |
+| `@tmuxinoicer-back`                | `"ctrl-b"`            | Move back.                                                                                   |
 | `@tmuxinoicer-window-height`       | `"75%"`               | Fzf-tmux display height.                                                                     |
 | `@tmuxinoicer-window-width`        | `"90%"`               | Fzf-tmux display width.                                                                      |
 | `@tmuxinoicer-default-window-mode` | `"off"`               | Sets window-mode as the default list for input.                                              |
 | `@tmuxinoicer-preview-location`    | `"right"`             | Fzf-tmux preview location.                                                                   |
 | `@tmuxinoicer-preview-ratio`       | `"50%"`               | Fzf-tmux preview ratio.                                                                      |
 | `@tmuxinoicer-extras`              | `"find,zoxide"`       | Adds both find and zoxide results to the list for input display.                             |
-| `@tmuxinoicer-find-base`           | `"$HOME/.config:1:1"` | A comma-separated list of directories and their depths to find directories based on rooters. |
+| `@tmuxinoicer-find-base`           | `"$HOME/.config:1:2"` | A comma-separated list of directories and their depths to find directories based on rooters. |
 | `@tmuxinoicer-find-rooters`        | `".git"`              | A comma-separated list of rooters.                                                           |
 | `@tmuxinoicer-zoxide-excludes`     | `".git,/nix"`         | A comma-separated list of paths you don't want in the zoxide result.                         |
 

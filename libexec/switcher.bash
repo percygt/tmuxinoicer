@@ -11,26 +11,26 @@ if [ "$HOME_SED_SAFE" -eq 0 ]; then
 fi
 
 handle_tmux_opts() {
-	bind_tree_mode=$(get_tmux_option "@tmuxinoicer-bind-tree-mode" "ctrl-t")
-	bind_window_mode=$(get_tmux_option "@tmuxinoicer-bind-window-mode" "ctrl-w")
-	bind_back=$(get_tmux_option "@tmuxinoicer-bind-back" "ctrl-b")
-	bind_new_window=$(get_tmux_option "@tmuxinoicer-bind-new-window" "ctrl-e")
-	bind_kill_session=$(get_tmux_option "@tmuxinoicer-bind-kill-session" "alt-bspace")
-	bind_exit=$(get_tmux_option "@tmuxinoicer-bind-abort" "esc")
-	bind_accept=$(get_tmux_option "@tmuxinoicer-bind-accept" "enter")
-	bind_delete_char=$(get_tmux_option "@tmuxinoicer-bind-delete-char" "bspace")
-	bind_rename=$(get_tmux_option '@tmuxinoicer-bind-rename' "ctrl-r")
+	bind_tree_mode=$(get_tmux_option "@tmuxinoicer-tree-mode" "ctrl-t")
+	bind_window_mode=$(get_tmux_option "@tmuxinoicer-window-mode" "ctrl-w")
+	bind_new_window=$(get_tmux_option "@tmuxinoicer-new-window" "ctrl-e")
+	bind_kill_session=$(get_tmux_option "@tmuxinoicer-kill-session" "alt-bspace")
+	bind_back=$(get_tmux_option "@tmuxinoicer-back" "ctrl-b")
+	bind_exit=$(get_tmux_option "@tmuxinoicer-abort" "esc")
+	bind_accept=$(get_tmux_option "@tmuxinoicer-accept" "enter")
+	bind_delete_char=$(get_tmux_option "@tmuxinoicer-delete-char" "bspace")
+	bind_rename=$(get_tmux_option '@tmuxinoicer-rename' "ctrl-r")
 
 	window_height=$(get_tmux_option "@tmuxinoicer-window-height" "75%")
 	window_width=$(get_tmux_option "@tmuxinoicer-window-width" "90%")
-	default_window_mode=$(get_tmux_option "@tmuxinoicer-window-mode" "off")
+	default_window_mode=$(get_tmux_option "@tmuxinoicer-default-window-mode" "off")
 	preview_location=$(get_tmux_option "@tmuxinoicer-preview-location" "right")
-	preview_ratio=$(get_tmux_option "@tmuxinoicer-preview-ratio" "50%")
+	preview_ratio=$(get_tmux_option "@tmuxinoicer-preview-ratio" "60%")
 
-	find_base_dir=$(get_tmux_option '@tmuxinoicer-base-dirs' "$HOME/.config:1")
-	find_rooters=$(get_tmux_option '@tmuxinoicer-rooters' '.git')
+	find_base_dir=$(get_tmux_option '@tmuxinoicer-find-base' "$HOME/.config:1:2")
+	find_rooters=$(get_tmux_option '@tmuxinoicer-find-rooters' '.git')
 	zoxide_excludes=$(get_tmux_option "@tmuxinoicer-zoxide-excludes" ".git,/nix")
-	add_list_opt=$(get_tmux_option "@tmuxinoicer-add-option" "find,zoxide")
+	add_list_opt=$(get_tmux_option "@tmuxinoicer-extras" "find,zoxide")
 }
 
 get_find_list() {
