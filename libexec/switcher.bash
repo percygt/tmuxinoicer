@@ -75,9 +75,9 @@ get_find_list() {
 
 get_sessions_list() {
 	if [ "$1" = "windows" ]; then
-		tmux list-windows -aF '#{session_last_attached} #S:#I' | sort --numeric-sort --reverse | awk '{print $2}' | grep -v "$(tmux list-windows -F '#S:#I')" || tmux list-windows -F '#S:#I'
+		tmux list-windows -aF '#S:#I #{session_last_attached} ' | sort --numeric-sort --reverse | awk '{print $1}' | grep -v "$(tmux list-windows -F '#S:#I')" || tmux list-windows -F '#S:#I'
 	elif [ "$1" = "sessions" ]; then
-		tmux list-sessions -F '#{session_last_attached} #S' | sort --numeric-sort --reverse | awk '{print $2}' | grep -v "$(tmux display-message -p '#S')" || tmux display-message -p '#S'
+		tmux list-sessions -F '#S #{session_last_attached}' | sort --numeric-sort --reverse | awk '{print $1}' | grep -v "$(tmux display-message -p '#S')" || tmux display-message -p '#S'
 	fi
 }
 
