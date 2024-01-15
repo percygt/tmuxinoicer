@@ -1,5 +1,6 @@
 {
-  description = "A combination of `noice` things to have in a tmux session manager.";
+  description = "Tmuxinoicer: A tmux session manager that brings together a collection of `noice` features to
+elevate your tmux experience.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

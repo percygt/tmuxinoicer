@@ -1,6 +1,7 @@
 # tmuxinoicer
 
-A combination of `noice` things to have in a tmux session manager.
+A tmux session manager that brings together a collection of `noice` features to
+elevate your tmux experience.
 
 ![image](./tmuxinoicer.png)
 
@@ -8,7 +9,7 @@ A combination of `noice` things to have in a tmux session manager.
 
 - Integrations with fzf for fuzzy search
 - Supports directory, session and tree-mode preview
-- Integrations with find and zoxide for fast session creation base on directory
+- Supports directory-based session creation with find and zoxide integration
 
 ## 🛠️ Requirements
 
@@ -63,29 +64,30 @@ After that, `tmuxinoicer` can now be used as a normal tmux plugin within
 
 ## ⚙️ Customization
 
-| Variable                           | Default value   | Description                                                                                      |
-| :--------------------------------- | :-------------- | :----------------------------------------------------------------------------------------------- |
-| `@tmuxinoicer-bind`                | `"o"`           | `Prefix` then this key to trigger the plugin.                                                    |
-| `@tmuxinoicer-window-mode`         | `"ctrl-w"`      | Key to display a list of windows for every session.                                              |
-| `@tmuxinoicer-tree-mode`           | `"ctrl-t"`      | Key to display the tree-mode preview.                                                            |
-| `@tmuxinoicer-new-window`          | `"ctrl-e"`      | Key to display a list of directories in the current session.                                     |
-| `@tmuxinoicer-kill-session`        | `"alt-bspace"`  | Key to kill the session.                                                                         |
-| `@tmuxinoicer-rename`              | `"ctrl-r"`      | Key to rename either the session or the basename of a directory.                                 |
-| `@tmuxinoicer-back`                | `"ctrl-b"`      | Key to move back.                                                                                |
-| `@tmuxinoicer-window-height`       | `"75%"`         | Fzf-tmux display height.                                                                         |
-| `@tmuxinoicer-window-width`        | `"90%"`         | Fzf-tmux display width.                                                                          |
-| `@tmuxinoicer-default-window-mode` | `"off"`         | Sets window-mode as the default result display for sessions.                                     |
-| `@tmuxinoicer-preview-location`    | `"right"`       | Fzf-tmux preview location.                                                                       |
-| `@tmuxinoicer-preview-ratio`       | `"60%"`         | Fzf-tmux preview ratio.                                                                          |
-| `@tmuxinoicer-extras`              | `"find,zoxide"` | Adds both find and zoxide to the result list.                                                    |
-| `@tmuxinoicer-find-base`           | `""`            | Comma-separated list of directories and their depths for searching directories based on rooters. |
-| `@tmuxinoicer-find-rooters`        | `".git"`        | Comma-separated list of rooters.                                                                 |
-| `@tmuxinoicer-zoxide-excludes`     | `".git,/nix"`   | Comma-separated list of paths you don't want in the zoxide result.                               |
+| Variable                           | Default value                             | Description                                                                                     |
+| :--------------------------------- | :---------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| `@tmuxinoicer-bind`                | `"o"`                                     | `<prefix>` then this key to trigger the plugin                                                  |
+| `@tmuxinoicer-window-mode`         | `"ctrl-w"`                                | keybind to display a list of windows for every session                                          |
+| `@tmuxinoicer-tree-mode`           | `"ctrl-t"`                                | keybind to display the tree-mode preview                                                        |
+| `@tmuxinoicer-new-window`          | `"ctrl-e"`                                | keybind to display a list of directories in the current session                                 |
+| `@tmuxinoicer-kill-session`        | `"alt-bspace"`                            | keybind to delete a session                                                                     |
+| `@tmuxinoicer-rename`              | `"ctrl-r"`                                | keybind to rename either a session or the basename of a directory                               |
+| `@tmuxinoicer-back`                | `"ctrl-b"`                                | keybind to move back                                                                            |
+| `@tmuxinoicer-default-window-mode` | `"off"`                                   | sets window-mode as the default result display for sessions                                     |
+| `@tmuxinoicer-window-height`       | `"75%"`                                   | fzf-tmux display height                                                                         |
+| `@tmuxinoicer-window-width`        | `"90%"`                                   | fzf-tmux display width                                                                          |
+| `@tmuxinoicer-preview-location`    | `"right"`                                 | fzf-tmux preview location                                                                       |
+| `@tmuxinoicer-preview-ratio`       | `"60%"`                                   | fzf-tmux preview ratio                                                                          |
+| `@tmuxinoicer-color`               | `"pointer:9,spinner:92,marker:46,fg+:11"` | fzf-tmux color options                                                                          |
+| `@tmuxinoicer-extras`              | `"find,zoxide"`                           | adds both find and zoxide to the result list                                                    |
+| `@tmuxinoicer-find-base`           | `""`                                      | comma-separated list of directories and their depths for searching directories based on rooters |
+| `@tmuxinoicer-find-rooters`        | `".git"`                                  | comma-separated list of rooters                                                                 |
+| `@tmuxinoicer-zoxide-excludes`     | `"/nix"`                                  | comma-separated list of paths you don't want in the zoxide result                               |
 
 ### Guide
 
-You can modify the list of default values above by setting the desired values in
-your `.tmux.conf`.
+Modify the list of default values above by setting the desired values in
+`.tmux.conf`.
 
 ```tmux
 set -g <variable> <value>
@@ -130,8 +132,6 @@ If you omit the depth or explicitly set it to `0`, the directory itself will be
 added as a project. In that case, you can add the directory as an input even if
 it contains no rooter.
 
----
-
 For example, if you want to search for [ghq](https://github.com/x-motemen/ghq)
 repositories as an input:
 
@@ -145,15 +145,20 @@ For example, if you want to add `~/.config/nvim` itself as an input:
 set -ag @tmuxinoicer-find-base ,"${HOME}/.config/nvim"
 ```
 
-## Thanks ❤️
+## 🤗 Acknowledgements
 
-Kudos to those behind these projects below. I wanted a session manager that fits
-my workflow, so I extracted key features and `noice` things from these sources:
+I would like to express my sincere gratitude to the following projects and their
+contributors, as I have incorporated code snippets and inspiration from them
+into this project:
 
-- https://github.com/sei40kr/tmux-project
-- https://github.com/omerxx/tmux-sessionx
-- https://github.com/joshmedeski/t-smart-tmux-session-manager
-- https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+- [tmux-project](https://github.com/sei40kr/tmux-project) | Search projects and
+  open them in a new session.
+- [tmux-sessionx](https://github.com/omerxx/tmux-sessionx) | A fuzzy Tmux
+  session manager with preview capabilities, deleting, renaming and more!
+- [t-smart-tmux-session-manager](https://github.com/joshmedeski/t-smart-tmux-session-manager)
+  | The smart tmux session manager
+- [tmux-sessionizer](https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer)
+  | ThePrimeagen's bash script for tmux sessions
 
 ## License
 
