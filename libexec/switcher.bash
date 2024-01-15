@@ -27,7 +27,7 @@ handle_tmux_opts() {
 	preview_location=$(get_tmux_option "@tmuxinoicer-preview-location" "right")
 	preview_ratio=$(get_tmux_option "@tmuxinoicer-preview-ratio" "60%")
 
-	find_base_dir=$(get_tmux_option '@tmuxinoicer-find-base' "$HOME/.config:1:2")
+	find_base_dir=$(get_tmux_option '@tmuxinoicer-find-base' "")
 	find_rooters=$(get_tmux_option '@tmuxinoicer-find-rooters' '.git')
 	zoxide_excludes=$(get_tmux_option "@tmuxinoicer-zoxide-excludes" ".git,/nix")
 	add_list_opt=$(get_tmux_option "@tmuxinoicer-extras" "find,zoxide")

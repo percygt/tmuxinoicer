@@ -50,38 +50,67 @@ Then, use the flake's `overlay` attribute:
   let
     pkgs = import nixpkgs {
       system = "x86_64-linux";
-      overlays = [ tmuxinoicer.overlay ];
+      overlays = [ tmuxinoicer.overlays.default ];
     };
   in
+    # You can now reference pkgs.tmuxPlugins.tmuxinoicer.
   { }
 }
 ```
 
-You can now then reference `pkgs.tmuxPlugins.tmuxinoicer` inside
-`programs.tmux.plugins`.
+After that, `tmuxinoicer` can now be used as a normal tmux plugin within
+`nixpkgs`.
 
 ## ⚙️ Customization
 
-| Variable                           | Default value         | Description                                                                                  |
-| :--------------------------------- | :-------------------- | :------------------------------------------------------------------------------------------- |
-| `@tmuxinoicer-bind`                | `"o"`                 | The key that triggers the plugin.                                                            |
-| `@tmuxinoicer-window-mode`         | `"ctrl-w"`            | Lists windows for every session.                                                             |
-| `@tmuxinoicer-tree-mode`           | `"ctrl-t"`            | Opens the tree preview.                                                                      |
-| `@tmuxinoicer-new-window`          | `"ctrl-e"`            | Lists directories in the current session                                                     |
-| `@tmuxinoicer-kill-session`        | `"alt-bspace"`        | Kills the session.                                                                           |
-| `@tmuxinoicer-rename`              | `"ctrl-r"`            | Renames either the session or the basename of a directory.                                   |
-| `@tmuxinoicer-back`                | `"ctrl-b"`            | Move back.                                                                                   |
-| `@tmuxinoicer-window-height`       | `"75%"`               | Fzf-tmux display height.                                                                     |
-| `@tmuxinoicer-window-width`        | `"90%"`               | Fzf-tmux display width.                                                                      |
-| `@tmuxinoicer-default-window-mode` | `"off"`               | Sets window-mode as the default list for input.                                              |
-| `@tmuxinoicer-preview-location`    | `"right"`             | Fzf-tmux preview location.                                                                   |
-| `@tmuxinoicer-preview-ratio`       | `"60%"`               | Fzf-tmux preview ratio.                                                                      |
-| `@tmuxinoicer-extras`              | `"find,zoxide"`       | Adds both find and zoxide results to the list for input display.                             |
-| `@tmuxinoicer-find-base`           | `"$HOME/.config:1:2"` | A comma-separated list of directories and their depths to find directories based on rooters. |
-| `@tmuxinoicer-find-rooters`        | `".git"`              | A comma-separated list of rooters.                                                           |
-| `@tmuxinoicer-zoxide-excludes`     | `".git,/nix"`         | A comma-separated list of paths you don't want in the zoxide result.                         |
+| Variable                           | Default value   | Description                                                                                      |
+| :--------------------------------- | :-------------- | :----------------------------------------------------------------------------------------------- |
+| `@tmuxinoicer-bind`                | `"o"`           | `Prefix` then this key to trigger the plugin.                                                    |
+| `@tmuxinoicer-window-mode`         | `"ctrl-w"`      | Key to display a list of windows for every session.                                              |
+| `@tmuxinoicer-tree-mode`           | `"ctrl-t"`      | Key to display the tree-mode preview.                                                            |
+| `@tmuxinoicer-new-window`          | `"ctrl-e"`      | Key to display a list of directories in the current session.                                     |
+| `@tmuxinoicer-kill-session`        | `"alt-bspace"`  | Key to kill the session.                                                                         |
+| `@tmuxinoicer-rename`              | `"ctrl-r"`      | Key to rename either the session or the basename of a directory.                                 |
+| `@tmuxinoicer-back`                | `"ctrl-b"`      | Key to move back.                                                                                |
+| `@tmuxinoicer-window-height`       | `"75%"`         | Fzf-tmux display height.                                                                         |
+| `@tmuxinoicer-window-width`        | `"90%"`         | Fzf-tmux display width.                                                                          |
+| `@tmuxinoicer-default-window-mode` | `"off"`         | Sets window-mode as the default result display for sessions.                                     |
+| `@tmuxinoicer-preview-location`    | `"right"`       | Fzf-tmux preview location.                                                                       |
+| `@tmuxinoicer-preview-ratio`       | `"60%"`         | Fzf-tmux preview ratio.                                                                          |
+| `@tmuxinoicer-extras`              | `"find,zoxide"` | Adds both find and zoxide to the result list.                                                    |
+| `@tmuxinoicer-find-base`           | `""`            | Comma-separated list of directories and their depths for searching directories based on rooters. |
+| `@tmuxinoicer-find-rooters`        | `".git"`        | Comma-separated list of rooters.                                                                 |
+| `@tmuxinoicer-zoxide-excludes`     | `".git,/nix"`   | Comma-separated list of paths you don't want in the zoxide result.                               |
 
-### Setting `@tmuxinoicer-find-base`
+### Guide
+
+You can modify the list of default values above by setting the desired values in
+your `.tmux.conf`.
+
+```tmux
+set -g <variable> <value>
+```
+
+#### `@tmuxinoicer-extras`
+
+`find` and `zoxide` are both enabled by default. If you want to display only
+`find` result.
+
+```tmux
+set -g @tmuxinoicer-extras "find"
+```
+
+#### `@tmuxinoicer-find-rooter`
+
+The result of `find` is based on the value of `@tmuxinoicer-find-rooter`. If the
+value is `.git`, it will search for directories that has `.git` directory in it.
+If you want the result to display all directories set this:
+
+```tmux
+set -g @tmuxinoicer-find-rooters ""
+```
+
+#### `@tmuxinoicer-find-base`
 
 `@tmuxinoicer-find-base` is a comma-separated list of directories and their
 depths to search for directories based on rooters.
@@ -118,8 +147,8 @@ set -ag @tmuxinoicer-find-base ,"${HOME}/.config/nvim"
 
 ## Thanks ❤️
 
-Kudos to those behind these projects. I wanted a session manager that fits my
-workflow, so I extracted key features and `noice` things from these sources:
+Kudos to those behind these projects below. I wanted a session manager that fits
+my workflow, so I extracted key features and `noice` things from these sources:
 
 - https://github.com/sei40kr/tmux-project
 - https://github.com/omerxx/tmux-sessionx
