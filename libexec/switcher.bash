@@ -243,6 +243,7 @@ main() {
 			return 0
 		fi
 		if [ "$HOME_SED_SAFE" -eq 0 ]; then
+			# shellcheck disable=2001
 			selected_path=$(echo "$selected_path" | sed -e "s|^~/|$HOME/|") # get real home path back
 		fi
 
