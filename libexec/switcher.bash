@@ -22,9 +22,9 @@ handle_tmux_opts() {
   bind_rename=$(get_tmux_option '@tmuxinoicer-rename' "ctrl-r")
 
   color=$(get_tmux_option "@tmuxinoicer-color" "")
-  window_size=$(get_tmux_option "@tmuxinoicer-window-size" "60%,90%")
+  window_size=$(get_tmux_option "@tmuxinoicer-window-size" "50%,75%")
   default_window_mode=$(get_tmux_option "@tmuxinoicer-default-window-mode" "off")
-  preview_window=$(get_tmux_option "@tmuxinoicer-preview-window" "up:40%:hidden")
+  preview_window=$(get_tmux_option "@tmuxinoicer-preview-window" "down:50%:hidden")
 
   find_base_dir=$(get_tmux_option '@tmuxinoicer-find-base' "")
   find_rooters=$(get_tmux_option '@tmuxinoicer-find-rooters' '.git')
